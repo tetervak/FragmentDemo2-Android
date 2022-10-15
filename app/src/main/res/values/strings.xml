@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Fragment Demo 2</string>
+
+    <!-- menu items -->
+    <string name="action_about">About</string>
+
+    <!-- about dialog -->
+    <string name="author">Alex Tetervak, Sheridan College, 2022</string>
+
+    <!-- the activity and fragment labels -->
+    <string name="main_activity">Main Activity</string>
+    <string name="main_fragment">Main Fragment</string>
+    <string name="output_fragment">Output Fragment</string>
+    <string name="check_in">Check In</string>
+    <string name="check_out">Check Out</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="check_in_dialog_message">Select Check-In Date and Time</string>
+    <string name="check_out_dialog_message">Select Check-Out Date and Time</string>
+</resources>
