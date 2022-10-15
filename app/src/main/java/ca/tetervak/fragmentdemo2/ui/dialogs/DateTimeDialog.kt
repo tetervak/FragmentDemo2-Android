@@ -1,7 +1,6 @@
 package ca.tetervak.fragmentdemo2.ui.dialogs
 
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
@@ -13,16 +12,10 @@ import java.util.*
 
 class DateTimeDialog : DialogFragment() {
 
-    interface DateTimeDialogListener {
-        fun setDate(requestKey: String, date: Date)
-    }
-
-    private var listener: DateTimeDialogListener? = null
-
     companion object {
         private const val REQUEST_KEY = "requestKey"
         private const val MESSAGE = "message"
-        private const val DATE = "date"
+        const val DATE = "date"
 
         fun newInstance(
             requestKey: String,
@@ -96,24 +89,12 @@ class DateTimeDialog : DialogFragment() {
         return AlertDialog.Builder(requireActivity()).apply {
             setView(binding.root)
             setPositiveButton(android.R.string.ok) { _, _ ->
-                listener?.setDate(requestKey, calendar.time)
+                parentFragmentManager.setFragmentResult(
+                    requestKey,
+                    bundleOf(DATE to calendar.time)
+                )
             }
             setNegativeButton(android.R.string.cancel, null)
         }.create()
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        if (parentFragment is DateTimeDialogListener) {
-            listener = parentFragment as DateTimeDialogListener
-        } else if (context is DateTimeDialogListener) {
-            listener = context
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
     }
 }

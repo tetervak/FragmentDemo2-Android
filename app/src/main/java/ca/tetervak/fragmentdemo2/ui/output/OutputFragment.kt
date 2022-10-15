@@ -11,7 +11,7 @@ import ca.tetervak.fragmentdemo2.databinding.FragmentOutputBinding
 import ca.tetervak.fragmentdemo2.ui.dialogs.DateTimeDialog
 import java.util.*
 
-class OutputFragment : Fragment(), DateTimeDialog.DateTimeDialogListener {
+class OutputFragment : Fragment() {
 
     companion object {
         const val CHECK_IN_DATE_REQUEST_KEY = "checkInDateRequestKey"
@@ -36,6 +36,19 @@ class OutputFragment : Fragment(), DateTimeDialog.DateTimeDialogListener {
         binding.checkInOutput.setOnClickListener{ openCheckInDialog() }
         binding.checkOutOutput.setOnClickListener{ openCheckOutDialog() }
 
+        parentFragmentManager.setFragmentResultListener(
+            CHECK_IN_DATE_REQUEST_KEY, viewLifecycleOwner){ _, bundle ->
+            @Suppress("DEPRECATION")
+            val date = bundle.getSerializable(DateTimeDialog.DATE) as Date
+            viewModel.setCheckInDate(date)
+        }
+
+        parentFragmentManager.setFragmentResultListener(
+            CHECK_OUT_DATE_REQUEST_KEY, viewLifecycleOwner){ _, bundle ->
+            @Suppress("DEPRECATION")
+            val date = bundle.getSerializable(DateTimeDialog.DATE) as Date
+            viewModel.setCheckOutDate(date)
+        }
 
         return binding.root
     }
@@ -46,7 +59,7 @@ class OutputFragment : Fragment(), DateTimeDialog.DateTimeDialogListener {
             message = getString(R.string.check_in_dialog_message),
             date = viewModel.checkInDate
         )
-        fragment.show(childFragmentManager, null)
+        fragment.show(parentFragmentManager, null)
     }
 
     private fun openCheckOutDialog() {
@@ -55,19 +68,12 @@ class OutputFragment : Fragment(), DateTimeDialog.DateTimeDialogListener {
             message = getString(R.string.check_out_dialog_message),
             date = viewModel.checkOutDate
         )
-        fragment.show(childFragmentManager, null)
+        fragment.show(parentFragmentManager, null)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    override fun setDate(requestKey: String, date: Date) {
-        when(requestKey){
-            CHECK_IN_DATE_REQUEST_KEY -> { viewModel.setCheckInDate(date) }
-            CHECK_OUT_DATE_REQUEST_KEY -> { viewModel.setCheckOutDate(date) }
-        }
     }
 
 }
