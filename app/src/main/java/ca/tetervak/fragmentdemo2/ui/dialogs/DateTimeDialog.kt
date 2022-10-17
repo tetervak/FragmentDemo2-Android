@@ -6,6 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.setFragmentResult
 import ca.tetervak.fragmentdemo2.databinding.DialogDateTimeBinding
 import com.google.android.material.tabs.TabLayout
 import java.util.*
@@ -89,10 +90,7 @@ class DateTimeDialog : DialogFragment() {
         return AlertDialog.Builder(requireActivity()).apply {
             setView(binding.root)
             setPositiveButton(android.R.string.ok) { _, _ ->
-                parentFragmentManager.setFragmentResult(
-                    requestKey,
-                    bundleOf(DATE to calendar.time)
-                )
+                setFragmentResult(requestKey, bundleOf(DATE to calendar.time))
             }
             setNegativeButton(android.R.string.cancel, null)
         }.create()

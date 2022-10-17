@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import ca.tetervak.fragmentdemo2.R
 import ca.tetervak.fragmentdemo2.databinding.FragmentOutputBinding
@@ -35,16 +36,13 @@ class OutputFragment : Fragment() {
 
         binding.checkInOutput.setOnClickListener{ openCheckInDialog() }
         binding.checkOutOutput.setOnClickListener{ openCheckOutDialog() }
-
-        parentFragmentManager.setFragmentResultListener(
-            CHECK_IN_DATE_REQUEST_KEY, viewLifecycleOwner){ _, bundle ->
+        setFragmentResultListener(CHECK_IN_DATE_REQUEST_KEY){ _, bundle ->
             @Suppress("DEPRECATION")
             val date = bundle.getSerializable(DateTimeDialog.DATE) as Date
             viewModel.setCheckInDate(date)
         }
 
-        parentFragmentManager.setFragmentResultListener(
-            CHECK_OUT_DATE_REQUEST_KEY, viewLifecycleOwner){ _, bundle ->
+        setFragmentResultListener(CHECK_OUT_DATE_REQUEST_KEY){ _, bundle ->
             @Suppress("DEPRECATION")
             val date = bundle.getSerializable(DateTimeDialog.DATE) as Date
             viewModel.setCheckOutDate(date)
